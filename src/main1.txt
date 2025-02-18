@@ -1,0 +1,77 @@
+#include "main.h"
+
+void setup(void) 
+{
+  own_stdio_setup();
+  printf("Sistem Started!\n");
+  printf("Enter command: \n");
+
+  pinMode(LED_BUILTIN, OUTPUT);
+};
+
+void loop(void) 
+{
+
+};
+
+void getHelp(void)
+{
+  printf("Available commands:\n");
+  printf("```\n");
+  printf("led_on: Turn on the LED\n");
+  printf("led_off: Turn off the LED\n");
+  printf("led_blink: Blink the LED\n");
+  printf("led_state: Get the LED status\n");
+  printf("led_toggle: Toggle the LED\n");
+  printf("```\n");
+}
+
+void ledControl(const char *command)
+{
+  if (!strcmp(command, "led_on"))
+  {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+  else if (!strcmp(command, "led_off"))
+  {
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+  else if (!strcmp(command, "led_blink"))
+  {
+    for (int i = 0; i < 5; i++)
+    {
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(500);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(500);
+    }
+  }
+  else if (!strcmp(command, "led_state"))
+  {
+    printf("LED status: %d\n", digitalRead(LED_BUILTIN));
+  }
+  else if (!strcmp(command, "led_toggle"))
+  {
+    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  }
+  else if (!strcmp(command, "help"))
+  {
+    getHelp();
+  }
+  else
+  {
+    printf("Unknown command. Type 'help' for a list of available commands.\n");
+  }
+}
+
+void serialEvent(void)
+{
+
+  char command[10] = {0};
+  printf("Enter command: ");
+  scanf("%10s", command);
+
+  printf("%s\n", command);
+  
+  ledControl(command);
+}
